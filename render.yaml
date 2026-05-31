@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: northwind-expense-review
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: northwind-expense-review-db
+          property: connectionString
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-5.4-mini-2026-03-17
+      - key: OPENAI_EMBEDDING_MODEL
+        value: text-embedding-3-small
+      - key: ENABLE_EMBEDDINGS
+        value: "true"
+      - key: SEED_DEMO_SUBMISSIONS
+        value: "true"
+
+databases:
+  - name: northwind-expense-review-db
+    plan: free
+    databaseName: northwind_expense_review
+
