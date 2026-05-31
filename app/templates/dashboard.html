@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <p class="eyebrow mb-1">Finance review controls</p>
+    <h1 class="h3 mb-1">Expense pre-review dashboard</h1>
+    <p class="text-secondary mb-0">Human reviewers make the final call. Every finding is cited and overrideable.</p>
+  </div>
+  <a href="/submissions/new" class="btn btn-primary">Start submission</a>
+</div>
+<div class="row g-3 mb-4">
+  {% for status, label in [("compliant", "Compliant"), ("flagged", "Flagged"), ("needs_review", "Needs review")] %}
+  <div class="col-md-4">
+    <div class="card metric-card h-100">
+      <div class="card-body">
+        <div class="text-secondary small">{{ label }}</div>
+        <div class="display-6 fw-semibold">{{ counts.get(status, 0) }}</div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+<div class="card">
+  <div class="card-header bg-white d-flex justify-content-between align-items-center">
+    <span class="fw-semibold">Recent submissions</span><a href="/history" class="small">Browse all</a>
+  </div>
+  <div class="table-responsive">
+    <table class="table align-middle mb-0">
+      <thead><tr><th>Employee</th><th>Trip</th><th>Total</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+      {% for submission in submissions %}
+        <tr>
+          <td><strong>{{ submission.employee.name }}</strong><br><span class="small text-secondary">{{ submission.employee.employee_id }}</span></td>
+          <td>{{ submission.trip_purpose }}<br><span class="small text-secondary">{{ submission.trip_dates }}</span></td>
+          <td>${{ "%.2f"|format(submission.total_amount) }}</td>
+          <td><span class="badge status-{{ submission.status }}">{{ submission.status|replace("_", " ") }}</span></td>
+          <td><a class="btn btn-sm btn-outline-primary" href="/submissions/{{ submission.id }}">Review</a></td>
+        </tr>
+      {% else %}
+        <tr><td colspan="5" class="text-center py-4 text-secondary">No submissions yet.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

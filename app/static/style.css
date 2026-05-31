@@ -1,0 +1,19 @@
+:root { --northwind: #12314a; --flagged: #b42318; --review: #9a6700; --ok: #087443; }
+body { background: #f7f8fa; color: #1e2933; }
+.bg-northwind { background: var(--northwind); }
+.eyebrow { color: #45677f; font-size: .76rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.metric-card { border: 0; box-shadow: 0 5px 18px rgba(22, 50, 72, .08); }
+.badge { text-transform: capitalize; }
+.status-compliant { background: #d9f7e8; color: var(--ok); }
+.status-flagged { background: #fee4e2; color: var(--flagged); }
+.status-needs_review { background: #fff3c4; color: var(--review); }
+.receipt-card { border-left-width: 5px; }
+.receipt-compliant { border-left-color: var(--ok); }
+.receipt-flagged { border-left-color: var(--flagged); }
+.receipt-needs_review { border-left-color: var(--review); }
+.finding { border-radius: .4rem; margin-top: .7rem; padding: .8rem; }
+.finding-flagged { background: #fff1f0; }
+.finding-needs_review { background: #fff8df; }
+blockquote { background: #f2f5f7; border-left: 3px solid #7890a1; font-size: .87rem; padding: .65rem .8rem; white-space: pre-line; }
+.override-form { background: #f5f7f9; border-radius: .5rem; padding: .8rem; }
+

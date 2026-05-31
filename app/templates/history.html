@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="h3">Submission history</h1>
+<form class="card card-body mb-3" method="get">
+  <div class="row g-2">
+    <div class="col-md-4"><input class="form-control" name="employee" value="{{ filters.employee }}" placeholder="Employee name"></div>
+    <div class="col-md-3"><select class="form-select" name="status"><option value="">All statuses</option>{% for value in ["compliant", "flagged", "needs_review"] %}<option value="{{ value }}" {% if filters.status == value %}selected{% endif %}>{{ value|replace("_", " ") }}</option>{% endfor %}</select></div>
+    <div class="col-md-3"><input class="form-control" name="trip_date" value="{{ filters.trip_date }}" placeholder="Trip date, e.g. 2025-04"></div>
+    <div class="col-md-2"><button class="btn btn-primary w-100">Filter</button></div>
+  </div>
+</form>
+{% include "submission_table.html" %}
+{% endblock %}
+

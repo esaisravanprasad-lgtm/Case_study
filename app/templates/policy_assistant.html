@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="h3">Policy assistant</h1>
+<p class="text-secondary">Ask a question about the Northwind policy library. Answers are grounded in retrieved policy clauses.</p>
+<form class="card card-body mb-3" method="post">
+  <label class="form-label">Policy question</label>
+  <div class="input-group"><input required class="form-control" name="question" value="{{ question }}" placeholder="Can I claim a separate lunch when my conference registration includes meals?"><button class="btn btn-primary">Ask</button></div>
+</form>
+{% if answer %}
+<div class="card card-body {% if answer.refused %}border-warning{% endif %}">
+  <h2 class="h5">{% if answer.refused %}Declined: insufficient policy support{% else %}Grounded answer{% endif %}</h2>
+  <p>{{ answer.answer }}</p>
+  {% for citation in answer.citations %}
+  <blockquote><strong>{{ citation.document_id }} §{{ citation.section }}</strong><br>{{ citation.quote }}</blockquote>
+  {% endfor %}
+</div>
+{% endif %}
+{% endblock %}
+

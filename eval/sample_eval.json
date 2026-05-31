@@ -1,0 +1,45 @@
+{
+  "receipts": [
+    {
+      "id": "dinner_under_cap",
+      "filename": "dinner.txt",
+      "content_type": "text/plain",
+      "expected_category": "meal",
+      "expected_verdict": "compliant",
+      "required_fields": ["merchant", "transaction_date", "total"],
+      "text": "SAMPLE BISTRO\n10 Jul 2025  7:10 PM\n  1  Pasta $24.00\n  1  Iced Tea $4.00\nSubtotal $28.00\nTax $2.00\nGRAND TOTAL $30.00\nVisa ****1234"
+    },
+    {
+      "id": "solo_alcohol",
+      "filename": "solo_alcohol.txt",
+      "content_type": "text/plain",
+      "expected_category": "meal",
+      "expected_verdict": "flagged",
+      "expected_policy_refs": ["TEP-003 §3.1"],
+      "required_fields": ["merchant", "transaction_date", "total"],
+      "text": "SAMPLE GRILL\n10 Jul 2025  8:10 PM\n  1  Burger $22.00\n  1  Beer $8.00\nSubtotal $30.00\nTax $2.00\nGRAND TOTAL $32.00\nVisa ****1234\nNOTE: Solo diner. No external attendees."
+    },
+    {
+      "id": "tier_one_lodging_over_cap",
+      "filename": "hotel.txt",
+      "content_type": "text/plain",
+      "expected_category": "lodging",
+      "expected_verdict": "flagged",
+      "expected_policy_refs": ["TEP-004 §3"],
+      "required_fields": ["merchant", "transaction_date", "total"],
+      "text": "SAMPLE HOTEL SEATTLE\nSeattle WA\nCheck-in: 10 Jul 2025\nNights: 2\nRoom: Standard\nTotal Charged $800.00\nMethod: Visa ****1234"
+    }
+  ],
+  "policy_questions": [
+    {
+      "question": "Are UberX airport rides reimbursable?",
+      "expected_refused": false,
+      "expected_policy_refs": ["TEP-006 §2.1"]
+    },
+    {
+      "question": "How many vacation days do employees receive?",
+      "expected_refused": true
+    }
+  ]
+}
+

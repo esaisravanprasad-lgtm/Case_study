@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-start mb-3">
+  <div>
+    <p class="eyebrow mb-1">Submission #{{ submission.id }}</p>
+    <h1 class="h3 mb-1">{{ submission.employee.name }}</h1>
+    <p class="text-secondary mb-0">{{ submission.trip_purpose }} | {{ submission.trip_dates }}</p>
+  </div>
+  <span class="badge fs-6 status-{{ submission.status }}">{{ submission.status|replace("_", " ") }}</span>
+</div>
+<div class="card card-body mb-4">
+  <div class="row">
+    <div class="col-md-4"><span class="text-secondary small">Submission total</span><div class="h4">${{ "%.2f"|format(submission.total_amount) }}</div></div>
+    <div class="col-md-8"><span class="text-secondary small">Approval route</span><div class="h5">{{ submission.approval_route }}</div></div>
+  </div>
+</div>
+{% for receipt in submission.receipts %}
+<article class="card mb-3 receipt-card receipt-{{ receipt.effective_verdict }}" id="receipt-{{ receipt.id }}">
+  <div class="card-header bg-white d-flex justify-content-between gap-3 align-items-center">
+    <div><strong>{{ receipt.filename }}</strong><br><span class="small text-secondary">{{ receipt.category|replace("_", " ") }}{% if receipt.amount is not none %} | ${{ "%.2f"|format(receipt.amount) }}{% endif %}</span></div>
+    <span class="badge status-{{ receipt.effective_verdict }}">{{ receipt.effective_verdict|replace("_", " ") }}</span>
+  </div>
+  <div class="card-body">
+    <div class="row g-3">
+      <div class="col-lg-8">
+        <p><strong>System reasoning:</strong> {{ receipt.reasoning }}</p>
+        <p><strong>Suggested action:</strong> {{ receipt.suggested_action }}</p>
+        <p class="small text-secondary">Extraction confidence: {{ "%.0f"|format(receipt.confidence * 100) }}% | <a href="/receipts/{{ receipt.id }}/download" target="_blank">Open original receipt</a></p>
+        {% for finding in receipt.findings %}
+        <div class="finding finding-{{ finding.severity }}">
+          <div class="fw-semibold">{{ finding.rule_code|replace("_", " ") }}</div>
+          <div>{{ finding.message }}</div>
+          <blockquote class="mt-2 mb-0"><strong>{{ finding.policy_document_id }} §{{ finding.policy_section }}</strong><br>{{ finding.policy_quote }}</blockquote>
+        </div>
+        {% endfor %}
+        {% if receipt.overrides %}
+        <h3 class="h6 mt-3">Audit trail</h3>
+        {% for override in receipt.overrides %}
+        <div class="small border-start ps-2 mb-2"><strong>{{ override.reviewer }}</strong> set <strong>{{ override.verdict }}</strong> on {{ override.created_at.strftime("%Y-%m-%d %H:%M") }} UTC<br>{{ override.comment }}</div>
+        {% endfor %}
+        {% endif %}
+      </div>
+      <div class="col-lg-4">
+        <form action="/receipts/{{ receipt.id }}/override" method="post" class="override-form">
+          <h3 class="h6">Reviewer override</h3>
+          <select class="form-select form-select-sm mb-2" name="verdict">
+            <option value="compliant">Compliant</option><option value="flagged">Flagged</option><option value="needs_review">Needs review</option>
+          </select>
+          <input class="form-control form-control-sm mb-2" name="reviewer" value="Finance reviewer" aria-label="Reviewer">
+          <textarea required class="form-control form-control-sm mb-2" name="comment" placeholder="Required audit comment"></textarea>
+          <button class="btn btn-sm btn-outline-primary">Record override</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</article>
+{% endfor %}
+{% endblock %}
+

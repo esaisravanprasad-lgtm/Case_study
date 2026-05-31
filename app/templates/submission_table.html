@@ -1,0 +1,9 @@
+<div class="card"><div class="table-responsive"><table class="table align-middle mb-0">
+  <thead><tr><th>Employee</th><th>Trip dates</th><th>Total</th><th>Status</th><th></th></tr></thead>
+  <tbody>{% for submission in submissions %}<tr>
+    <td>{{ submission.employee.name }}</td><td>{{ submission.trip_dates }}</td><td>${{ "%.2f"|format(submission.total_amount) }}</td>
+    <td><span class="badge status-{{ submission.status }}">{{ submission.status|replace("_", " ") }}</span></td>
+    <td><a href="/submissions/{{ submission.id }}" class="btn btn-sm btn-outline-primary">Review</a></td>
+  </tr>{% else %}<tr><td colspan="5" class="text-center py-4 text-secondary">No matching submissions.</td></tr>{% endfor %}</tbody>
+</table></div></div>
+
