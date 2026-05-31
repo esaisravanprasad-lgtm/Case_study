@@ -3,7 +3,7 @@
 ## Submission links
 
 - Live demo: [`https://northwind-expense-review.onrender.com`](https://northwind-expense-review.onrender.com)
-- Source code: [`https://github.com/Balavardhanreddysheelam/northwind-expense-review`](https://github.com/Balavardhanreddysheelam/northwind-expense-review)
+- Source code: ['https://github.com/esaisravanprasad-lgtm/Case_study'](https://github.com/esaisravanprasad-lgtm/Case_study)
 
 ## Problem
 
